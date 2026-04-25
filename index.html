@@ -2,67 +2,44 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Giáo Xứ Đồng Bài</title>
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-gray-100 text-gray-800">
+<body class="bg-gray-100">
 
-<!-- Header -->
-<header class="bg-blue-900 text-white text-center p-6 shadow">
+<header class="bg-blue-900 text-white p-6 text-center">
 <h1 class="text-3xl font-bold">GIÁO XỨ ĐỒNG BÀI</h1>
-<p class="text-sm">Chung tay xây dựng Nhà Thờ</p>
+<p>Trang tin tức</p>
 </header>
 
-<!-- Hero -->
-<section class="text-center py-12 bg-white">
-<h2 class="text-3xl font-bold mb-4">Dự án xây dựng Nhà Thờ</h2>
-<p class="max-w-2xl mx-auto">Giáo xứ Đồng Bài đang xây dựng nhà thờ mới để phục vụ đời sống đức tin. Rất mong sự chung tay của quý ân nhân.</p>
-</section>
-
-<!-- Progress -->
-<section class="p-8">
-<h2 class="text-xl text-center font-semibold mb-4">Tiến độ gây quỹ</h2>
-<div class="max-w-xl mx-auto bg-gray-200 rounded-full h-6">
-<div class="bg-blue-700 h-6 rounded-full text-white flex items-center justify-center" style="width:4%">4%</div>
+<div class="max-w-3xl mx-auto p-6">
+<h2 class="text-xl font-bold mb-4">Tin mới</h2>
+<div id="posts"></div>
 </div>
-<p class="text-center mt-2 font-medium">2 / 45 tỷ VNĐ</p>
-</section>
 
-<!-- Stats -->
-<section class="grid md:grid-cols-3 gap-6 p-8">
-<div class="bg-white p-6 rounded-2xl shadow text-center">
-<h3 class="font-bold">Tổng kinh phí</h3>
-<p class="text-xl">45 tỷ</p>
-</div>
-<div class="bg-white p-6 rounded-2xl shadow text-center">
-<h3 class="font-bold">Đã có</h3>
-<p class="text-xl">2 tỷ</p>
-</div>
-<div class="bg-white p-6 rounded-2xl shadow text-center">
-<h3 class="font-bold">Còn thiếu</h3>
-<p class="text-xl">43 tỷ</p>
-</div>
-</section>
+<script>
+const repo = "TEN_GITHUB_CUA_BAN/giaoxu-dongbai";
 
-<!-- Call -->
-<section class="bg-blue-50 p-10 text-center">
-<h2 class="text-2xl font-semibold mb-4">Kêu gọi đóng góp</h2>
-<p class="max-w-xl mx-auto">Mỗi sự đóng góp dù nhỏ đều góp phần xây dựng ngôi nhà chung của cộng đoàn.</p>
-</section>
+async function loadPosts(){
+  const res = await fetch(`https://api.github.com/repos/${repo}/contents/posts`);
+  const data = await res.json();
 
-<!-- Contact -->
-<section class="p-8 text-center">
-<h2 class="text-xl font-semibold mb-4">Liên hệ</h2>
-<p>Cha Phaolô Phạm Công Trình</p>
-<p class="text-lg font-bold">0368 986 591</p>
-</section>
+  let html = "";
+  for(const file of data){
+    html += `
+      <div class="bg-white p-4 rounded mb-4 shadow">
+        <h3 class="font-bold text-lg">${file.name}</h3>
+        <a href="${file.html_url}" target="_blank" class="text-blue-600">Xem bài viết</a>
+      </div>
+    `;
+  }
+  document.getElementById("posts").innerHTML = html;
+}
 
-<!-- Footer -->
-<footer class="bg-gray-800 text-white text-center p-4">
-<p>© 2026 Giáo Xứ Đồng Bài</p>
-</footer>
+loadPosts();
+</script>
 
 </body>
 </html>
+
