@@ -1,73 +1,49 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Giáo Xứ Đồng Bài - Xây Dựng Nhà Thờ</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+<meta charset="UTF-8">
+<title>Giáo Xứ Đồng Bài</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
-<body class="bg-gray-100 text-gray-800">
 
-  <!-- Header -->
-  <header class="bg-blue-900 text-white p-6 shadow-lg text-center">
-    <h1 class="text-3xl font-bold">GIÁO XỨ ĐỒNG BÀI</h1>
-    <p class="text-sm">Hiệp lòng xây dựng Nhà Thờ</p>
-  </header>
+<body class="bg-gray-100">
 
-  <!-- Hero -->
-  <section class="bg-white py-8 text-center">
-    <img src="Admin/IMG_20260425_101026.jpg" class="mx-auto rounded-1xl shadow mb-2">
-    <h2 class="text-2xl font-semibold">Dự án xây dựng Nhà Thờ mới</h2>
-    <p class="max-w-xl mx-auto mt-3">Ngôi nhà thờ là trung tâm đời sống đức tin của cộng đoàn. Giáo xứ Đồng Bài đang từng bước xây dựng với sự chung tay của mọi người.</p>
-  </section>
+<header class="bg-blue-900 text-white p-6 text-center">
+<h1 class="text-3xl font-bold">GIÁO XỨ ĐỒNG BÀI</h1>
+<p>Trang tin tức giáo xứ</p>
+</header>
 
-  <!-- Progress -->
-  <section class="p-8">
-    <h2 class="text-xl font-semibold mb-4 text-center">Tiến độ gây quỹ</h2>
-    <div class="max-w-xl mx-auto bg-gray-200 rounded-full h-6">
-      <div class="bg-blue-700 h-6 rounded-full text-white text-sm flex items-center justify-center" style="width: 4%">
-        4%
+<div class="max-w-3xl mx-auto p-6">
+<h2 class="text-xl font-bold mb-4">Tin mới</h2>
+<div id="posts"></div>
+</div>
+
+<script>
+const repo = "REPLACE_USERNAME/giaoxu-dongbai";
+
+async function loadPosts(){
+  const res = await fetch(`https://api.github.com/repos/${repo}/contents/posts`);
+  const files = await res.json();
+
+  let html = "";
+
+  for(const file of files){
+    const raw = await fetch(file.download_url);
+    const text = await raw.text();
+
+    html += `
+      <div class="bg-white p-4 rounded mb-6 shadow">
+        <div class="prose">${marked.parse(text)}</div>
       </div>
-    </div>
-    <p class="text-center mt-2">Đã đạt: 2 / 45 tỷ VNĐ</p>
-  </section>
+    `;
+  }
 
-  <!-- Info -->
-  <section class="p-8 grid md:grid-cols-3 gap-6">
-    <div class="bg-white p-6 rounded-2xl shadow">
-      <h3 class="font-bold text-lg mb-2">Tiến độ xây dựng</h3>
-      <p>Đang trong giai đoạn chuẩn bị và thi công ban đầu.</p>
-    </div>
-    <div class="bg-white p-6 rounded-2xl shadow">
-      <h3 class="font-bold text-lg mb-2">Tổng kinh phí</h3>
-      <p>Khoảng 45 tỷ VNĐ</p>
-    </div>
-    <div class="bg-white p-6 rounded-2xl shadow">
-      <h3 class="font-bold text-lg mb-2">Lời kêu gọi</h3>
-      <p>Kính mong quý ân nhân xa gần chung tay góp sức xây dựng Nhà Chúa.</p>
-    </div>
-  </section>
+  document.getElementById("posts").innerHTML = html;
+}
 
-  <!-- Donation -->
-  <section class="bg-blue-50 p-8 text-center">
-    <h2 class="text-xl font-semibold mb-4">Ủng hộ xây dựng</h2>
-    <p class="mb-4">Quý ân nhân có thể liên hệ trực tiếp để đóng góp:</p>
-    <p class="font-bold">Linh mục quản xứ: Cha Phaolô Phạm Công Trình</p>
-    <p>Điện thoại: 0368 986 591</p>
-    <img src="Admin/IMG_20260425_090639299.jpg" class="mx-auto mt-4">
-  </section>
-
-  <!-- Contact -->
-  <section class="p-8 text-center">
-    <h2 class="text-xl font-semibold mb-4">Liên hệ</h2>
-    <p>Cha Phaolô Phạm Công Trình</p>
-    <p>Điện thoại: 0368 986 591</p>
-  </section>
-
-  <!-- Footer -->
-  <footer class="bg-gray-800 text-white text-center p-4">
-    <p>© 2026 Giáo Xứ Đồng Bài</p>
-  </footer>
+loadPosts();
+</script>
 
 </body>
 </html>
