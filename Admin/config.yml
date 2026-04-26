@@ -14,5 +14,4 @@ collections:
     fields:
       - { label: "Tiêu đề", name: "title", widget: "string" }
       - { label: "Người đăng", name: "author", widget: "string" }
-      - { label: "Ảnh", name: "image", widget: "image", required: false }
       - { label: "Nội dung", name: "body", widget: "markdown" }
